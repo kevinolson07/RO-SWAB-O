@@ -19,20 +19,20 @@ GPIO.output(ping, GPIO.LOW)
 time.sleep(.000002)
 GPIO.output(ping, GPIO.HIGH)
 time.sleep(.000005)
-GPIO.output(ping GPIO.LOW)
+GPIO.output(ping, GPIO.LOW)
 
-while GPIO.input(ping) == LOW:
-    start_time = time.time()
+# while GPIO.input(ping) == LOW:
+#     start_time = time.time()
 
-while GPIO.input == HIGH:
-    end_time = time.time()
+# while GPIO.input == HIGH:
+#     end_time = time.time()
 
-duration = end_time - start_time
-distance = duration * (34000/2)
-print (distance, "cm")
-time.sleep(0.5)
+# duration = end_time - start_time
+# distance = duration * (34000/2)
+# print (distance, "cm")
+# time.sleep(0.5)
 
-GPIO.output(motor_dir1, GPIO.LOW)
+GPIO.output(motor_dir1, GPIO.HIGH)
 for i in range(revolutions):
     for x in range(stepsPerRev):
         GPIO.output(motor1, GPIO.HIGH)
