@@ -46,7 +46,7 @@ def measure():
 # Main
 #-----------
 revolutions = 1
-stepsPerRev = 200
+stepsPerRev = 25
 # pin used for ultrasonic signal
 GPIO_trigger = 11
 # pins used to control motor
