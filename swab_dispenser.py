@@ -17,12 +17,14 @@ def nema_motor():
             GPIO.output(motor1, GPIO.LOW)
             time.sleep(.001)
 
+
 # 28BYJ-48 steper motor control
 def small_motor():
     print("some code")
 
 # ultrasonic sensor measurement
 def measure():
+    GPIO.setup(GPIO_trigger, GPIO.OUT)
     GPIO.output(GPIO_trigger, GPIO.LOW)
     time.sleep(.000002)
     GPIO.output(GPIO_trigger, GPIO.HIGH)
@@ -30,14 +32,14 @@ def measure():
     GPIO.setup(GPIO_trigger, GPIO.IN)
 
     
-    while GPIO.input(GPIO_echo) == 0:
+    while GPIO.input(GPIO_trigger) == 0:
         start = time.time()
 
-    while GPIO.input(GPIO_echo) == 1:
+    while GPIO.input(GPIO_trigger) == 1:
         stop = time.time()
 
     elapsed_time = stop - start
-    distance = (elapsed * 34300)/2
+    distance = (elapsed_time * 34000)/2
     return distance
 
 
@@ -60,5 +62,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pins,GPIO.OUT)
 GPIO.output(motor_dir1, GPIO.LOW)
 
-measure():
+while 1:
+    distance = measure()
+    print(distance)
+    time.sleep(.5)
 
