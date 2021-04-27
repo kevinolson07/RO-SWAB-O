@@ -10,25 +10,42 @@ import time
 
 # Nema 17 motor control
 def nema_motor():
-    for i in range(revolutions):
-        for x in range(stepsPerRev):
+    for i in range(Nema_revolutions):
+        for x in range(Nema_stepsPerRev):
             GPIO.output(motor1, GPIO.HIGH)
             time.sleep(.001)
             GPIO.output(motor1, GPIO.LOW)
             time.sleep(.001)
 
 
+
 # 28BYJ-48 steper motor control
 def small_motor():
     print("some code")
+    delay = .005
+    seq = list(range(0,4))
+    seq[0] = [1,0,0,0]
+    seq[1] = [0,1,0,0]
+    seq[2] = [0,0,1,0]
+    seq[3] = [0,0,0,1]
+
+    # seq[4] = [1,0,0,0]
+    # seq[5] = [0,1,0,0]
+    # seq[6] = [0,0,1,0]
+    # seq[7] = [0,0,0,1]
+    for j in range(100):
+        for i in range(0,4):
+            GPIO.output(coil_A_1,seq[i][0])
+            GPIO.output(coil_A_2,seq[i][1])
+            GPIO.output(coil_B_1,seq[i][2])
+            GPIO.output(coil_B_2,seq[i][3])
+            time.sleep(delay)
 
 # ultrasonic sensor measurement
 
 def measure():
-    print("distance measuremnet in progress")
     GPIO.output(GPIO_trigger, False)
-    print("waiting forsensor to settle")
-    time.sleep(1)
+    time.sleep(.5)
     GPIO.output(GPIO_trigger, True)
     time.sleep(.00001)
     GPIO.output(GPIO_trigger, False)
@@ -60,17 +77,24 @@ def measure():
 #-----------
 # Main
 #-----------
-revolutions = 1
-stepsPerRev = 25
+counter = 0
+
+# values for motor control
+Nema_revolutions = 1
+Nema_stepsPerRev = 25
 # pin used for ultrasonic signal
 GPIO_trigger = 16
 GPIO_echo = 18
-# pins used to control motor
+# pins used to control Nema motor
 motor_dir1 = 35
 motor1 = 36
-motor_dir2 = 37
-motor2 = 38
-pins = [GPIO_trigger, motor1, motor_dir1, motor2, motor_dir2]
+# Pins used to control 28BYJ-48 stepper motor
+coil_A_1 = 33
+coil_A_2 = 37
+coil_B_1 = 38
+coil_B_2 = 40
+
+pins = [GPIO_trigger, motor1, motor_dir1, coil_A_1, coil_A_2, coil_B_1, coil_B_2]
 # setting the pin nomenclature to match the Board pinouts
 GPIO.setmode(GPIO.BOARD)    
 GPIO.setup(pins,GPIO.OUT)
@@ -78,10 +102,16 @@ GPIO.setup(GPIO_echo,GPIO.IN)
 GPIO.output(motor_dir1, GPIO.LOW)
 
 while 1:
+    print(counter)
     distance = measure()
     print(distance, "cm")
     time.sleep(.5)
     if distance >= 6:
-        nema_motor()
-        print("nema motor function ran!!!!!!!")
-
+        counter += 1
+        small_motor()
+        if counter >= 6:
+            nema_motor()
+            print("nema motor function ran!!!!!!!")
+            counter = 0
+    else:
+        counter = 0
