@@ -45,7 +45,7 @@ def small_motor():
 
 def measure():
     GPIO.output(GPIO_trigger, False)
-    time.sleep(.5)
+    time.sleep(.25)
     GPIO.output(GPIO_trigger, True)
     time.sleep(.00001)
     GPIO.output(GPIO_trigger, False)
@@ -105,8 +105,8 @@ while 1:
     print(counter)
     distance = measure()
     print(distance, "cm")
-    time.sleep(.5)
-    if distance >= 6:
+    time.sleep(.25)
+    if distance >= 40:
         counter += 1
         small_motor()
         if counter >= 6:

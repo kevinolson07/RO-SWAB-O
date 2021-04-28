@@ -20,14 +20,13 @@ def nema_motor():
 
 # values for motor control
 Nema_revolutions = 1
-Nema_stepsPerRev = 25
+Nema_stepsPerRev = 200
 motor_dir1 = 35
 motor1 = 36
 pins = [motor_dir1, motor1]
 
 GPIO.setmode(GPIO.BOARD)    
 GPIO.setup(pins,GPIO.OUT)
-GPIO.setup(GPIO_echo,GPIO.IN)
 GPIO.output(motor_dir1, GPIO.LOW)
 
 # -------
